@@ -1,10 +1,23 @@
 var express = require('express');
 var app = express();
+var { config } = require('./config');
+var usersApi = require('./routes/users');
 
-app.get('/', (req, res) => {
-  res.send('Hola mundo');
+// body parser
+app.use(express.json());
+
+//routes
+usersApi(app);
+
+// ping
+app.get('/ping', (req, res) => {
+  res.status(200).json({
+    statusCode: 200,
+    serverDate: moment.now(),
+    message: 'pong!! 🏓',
+  });
 });
 
-app.listen(3000, () => {
-  console.log('Escuchando en el puerto 3000');
+app.listen(config.port, () => {
+  console.log(`Escuchando en el puerto ${config.port}`);
 });
