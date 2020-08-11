@@ -1,13 +1,15 @@
-var express = require('express');
-var app = express();
-var { config } = require('./config');
-var usersApi = require('./routes/users');
+const express = require('express');
+const app = express();
+const { config } = require('./config');
+const usersApi = require('./routes/users');
+const cancellationsApi = require('./routes/cancellations');
 
 // body parser
 app.use(express.json());
 
 //routes
 usersApi(app);
+cancellationsApi(app);
 
 // ping
 app.get('/ping', (req, res) => {
