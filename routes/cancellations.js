@@ -3,6 +3,8 @@ const CancellationsService = require('../services/cancellations');
 const jwt = require('jsonwebtoken');
 const verifyTokenMiddleware = require('../utils/middleware/verifyTokenMiddleware');
 
+const { cancellationOrder } = require('../utils/email');
+
 const { config } = require('../config');
 
 const cancellationsApi = (app) => {
@@ -22,6 +24,7 @@ const cancellationsApi = (app) => {
           ID_SUBJECT: subjectId,
         };
         await cancellationsService.createCancellationOrder({ order });
+        cancellationOrder();
         res.status(201).json({
           statusCode: 201,
           message: 'Cancellation order created',
