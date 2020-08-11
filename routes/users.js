@@ -1,6 +1,7 @@
 const express = require('express');
 const UsersService = require('../services/users');
 const jwt = require('jsonwebtoken');
+const verifyTokenMiddleware = require('../utils/middleware/verifyTokenMiddleware');
 
 const { config } = require('../config');
 
@@ -30,6 +31,23 @@ const usersApi = (app) => {
           });
         });
       }
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.get('/subjects', verifyTokenMiddleware, async (req, res, next) => {
+    try {
+      jwt.verify(req.token, config.secretKey, async (err, authData) => {
+        if (err) next(err);
+        const { user } = authData;
+        const subjects = await usersService.getSubjects(user.ID);
+        res.status(200).json({
+          statusCode: 200,
+          message: 'Subjects listed',
+          subjects,
+        });
+      });
     } catch (error) {
       next(error);
     }
