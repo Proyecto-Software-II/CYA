@@ -52,6 +52,22 @@ const usersApi = (app) => {
       next(error);
     }
   });
+
+  router.get('/info', verifyTokenMiddleware, async (req, res, next) => {
+    try {
+      jwt.verify(req.token, config.secretKey, async (err, authData) => {
+        if (err) next(err);
+        const { user } = authData;
+        res.status(200).json({
+          statusCode: 200,
+          message: 'User info',
+          user,
+        });
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 };
 
 module.exports = usersApi;
