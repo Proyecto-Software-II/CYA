@@ -17,7 +17,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory, useParams } from "react-router-dom";
+import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 //Icons
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "white",
   },
 }));
 
@@ -86,9 +87,14 @@ const CancellationDetail = () => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              CYA
-            </Typography>
+            <Link
+              component={RouterLink}
+              underline="none"
+              to={`/`}
+              className={classes.title}
+            >
+              <Typography variant="h6">CYA</Typography>
+            </Link>
             <Box
               display="flex"
               flexDirection="row"

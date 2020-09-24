@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "white",
   },
   table: {
     minWidth: 650,
@@ -90,9 +91,14 @@ const Home = () => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              CYA
-            </Typography>
+            <Link
+              component={RouterLink}
+              underline="none"
+              to={`/`}
+              className={classes.title}
+            >
+              <Typography variant="h6">CYA</Typography>
+            </Link>
             <Box
               display="flex"
               flexDirection="row"
@@ -143,7 +149,9 @@ const Home = () => {
                       <TableCell>{e.USERNAME}</TableCell>
                       <TableCell>{e.EMAIL}</TableCell>
                       <TableCell>{e.NAME}</TableCell>
-                      <TableCell>{e.STATE}</TableCell>
+                      {e.STATE === "A" && <TableCell>Aceptada</TableCell>}
+                      {e.STATE === "C" && <TableCell>Creada</TableCell>}
+                      {e.STATE === "D" && <TableCell>Denegada</TableCell>}
                       <TableCell>
                         <Link href={`${url}/static/${e.FILE_NAME}`}>
                           {e.FILE_NAME}
@@ -169,7 +177,7 @@ const Home = () => {
             </Table>
           </TableContainer>
           {userData.IS_ADMIN === 0 && (
-            <Box mt={2}>
+            <Box mt={2} display="flex" justifyContent="center">
               <Button variant="contained" color="primary">
                 Agregar cancelacion
               </Button>
