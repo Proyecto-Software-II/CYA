@@ -11,6 +11,7 @@ import {
   Button,
   CircularProgress,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 //Context
 import { useData } from "../../Context/DataContext";
@@ -31,6 +32,7 @@ const Login = () => {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   if (isLoading) {
     return (
       <Box
@@ -52,6 +54,9 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
     >
+      {error && (
+        <Alert severity="error">Usuario o contraseña incorrectos</Alert>
+      )}
       <Paper>
         <Box
           display="flex"
@@ -64,13 +69,16 @@ const Login = () => {
           <Box mt={3}>
             <TextField
               value={username}
-              error={usernameError}
+              error={usernameError || error}
               label="Usuario"
               variant="outlined"
               helperText="@uptc.edu.co"
               onChange={(e) => {
                 if (usernameError) {
                   setUsernameError(false);
+                }
+                if (error) {
+                  setError(false);
                 }
                 setUsername(e.target.value);
               }}
@@ -79,13 +87,16 @@ const Login = () => {
           <Box mt={3}>
             <TextField
               value={password}
-              error={passwordError}
+              error={passwordError || error}
               label="Contraseña"
               variant="outlined"
               type="password"
               onChange={(e) => {
                 if (passwordError) {
                   setPasswordError(false);
+                }
+                if (error) {
+                  setError(false);
                 }
                 setPassword(e.target.value);
               }}
@@ -124,7 +135,9 @@ const Login = () => {
                     });
                     setUserData(userResponse.data.user);
                   } catch (e) {
-                    //TODO: manejar error
+                    //TODO: manejar error de coneccion
+                    setError(true);
+                    setIsLoading(false);
                   }
                 }
               }}
