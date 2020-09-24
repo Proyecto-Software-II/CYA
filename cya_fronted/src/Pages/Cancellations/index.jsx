@@ -20,7 +20,8 @@ import {
   Link,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import axios from "axios";
 //Icons
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -47,10 +48,7 @@ const Home = () => {
   const { userData, setIsLoged, token, url } = useData();
   const [cancellations, setCancellations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  //TODO: modulo de creacion si no es admin
-
-  console.log(userData);
+  let history = useHistory();
 
   useEffect(() => {
     axios({
@@ -60,11 +58,18 @@ const Home = () => {
         Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
-      //TODO: filtrar si no es admin
-      setCancellations(res.data.cancellations);
+      if (userData.IS_ADMIN === 1) {
+        setCancellations(res.data.cancellations);
+      } else {
+        const data = res.data.cancellations.filter(
+          (e) => e.EMAIL === userData.EMAIL
+        );
+        setCancellations(data);
+      }
+
       setIsLoading(false);
     });
-  }, [token, url]);
+  }, [token, url, userData.IS_ADMIN, userData.EMAIL]);
 
   if (isLoading) {
     return (
@@ -101,6 +106,7 @@ const Home = () => {
                 color="inherit"
                 onClick={() => {
                   setIsLoged(false);
+                  history.push("/");
                   window.location.reload(true);
                 }}
               >
@@ -110,52 +116,67 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       </div>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Usuario</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Materia</TableCell>
-              <TableCell>Estado</TableCell>
-              <TableCell>Archivo</TableCell>
-              {userData.IS_ADMIN === 1 && <TableCell>Opciones</TableCell>}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {cancellations.map((e, i) => {
-              return (
-                <TableRow key={i}>
-                  <TableCell component="th" scope="row">
-                    {e.ID}
-                  </TableCell>
-                  <TableCell>{e.USERNAME}</TableCell>
-                  <TableCell>{e.EMAIL}</TableCell>
-                  <TableCell>{e.NAME}</TableCell>
-                  <TableCell>{e.STATE}</TableCell>
-                  <TableCell>
-                    <Link href={`${url}/static/${e.FILE_NAME}`}>
-                      {e.FILE_NAME}
-                    </Link>
-                  </TableCell>
-                  {userData.IS_ADMIN === 1 && (
-                    <TableCell>
-                      <Link
-                        component={RouterLink}
-                        underline="none"
-                        to={`/cancellations/${e.ID}`}
-                      >
-                        <Button>Editar</Button>
-                      </Link>
-                    </TableCell>
-                  )}
+      {cancellations.length === 0 ? (
+        <Alert severity="info">No hay cancelaciones para mostrar</Alert>
+      ) : (
+        <>
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Usuario</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Materia</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell>Archivo</TableCell>
+                  {userData.IS_ADMIN === 1 && <TableCell>Opciones</TableCell>}
                 </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableHead>
+              <TableBody>
+                {cancellations.map((e, i) => {
+                  return (
+                    <TableRow key={i}>
+                      <TableCell component="th" scope="row">
+                        {e.ID}
+                      </TableCell>
+                      <TableCell>{e.USERNAME}</TableCell>
+                      <TableCell>{e.EMAIL}</TableCell>
+                      <TableCell>{e.NAME}</TableCell>
+                      <TableCell>{e.STATE}</TableCell>
+                      <TableCell>
+                        <Link href={`${url}/static/${e.FILE_NAME}`}>
+                          {e.FILE_NAME}
+                        </Link>
+                      </TableCell>
+                      {userData.IS_ADMIN === 1 && (
+                        <TableCell>
+                          <Link
+                            component={RouterLink}
+                            underline="none"
+                            to={`/cancellations/${e.ID}`}
+                          >
+                            <Button variant="contained" color="primary">
+                              Editar
+                            </Button>
+                          </Link>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {userData.IS_ADMIN === 0 && (
+            <Box mt={2}>
+              <Button variant="contained" color="primary">
+                Agregar cancelacion
+              </Button>
+            </Box>
+          )}
+        </>
+      )}
     </>
   );
 };
