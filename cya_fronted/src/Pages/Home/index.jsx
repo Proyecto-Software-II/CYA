@@ -86,7 +86,7 @@ const Home = () => {
         <Grid item>
           <Paper>
             <Box p={5} mt={3} mx={2}>
-              <Link component={RouterLink} underline="none" to={`/apertura`}>
+              <Link component={RouterLink} underline="none" to={`/openings`}>
                 <Typography variant="h2">Apertura</Typography>
               </Link>
             </Box>

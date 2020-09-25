@@ -8,6 +8,9 @@ import Cancellations from "./Pages/Cancellations";
 import CancellationDetail from "./Pages/CancellationDetail";
 import CreateCancellation from "./Pages/CreateCancellation";
 import CancellationMessage from "./Pages/CancellationMessage";
+import Openings from "./Pages/Openings";
+import OpeningDetail from "./Pages/OpeningDetail";
+import CreateOpening from "./Pages/CreateOpening";
 //Context
 import { useData } from "./Context/DataContext";
 
@@ -34,6 +37,9 @@ const App = () => {
             component={CancellationMessage}
             exact
           />
+          <Route path="/openings" component={Openings} exact />
+          <Route path="/openings/:id" component={OpeningDetail} exact />
+          <Route path="/createOpening" component={CreateOpening} exact />
         </Switch>
       </Router>
     );

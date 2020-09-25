@@ -48,45 +48,28 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const { userData, setIsLoged, token, url } = useData();
-  const [cancellations, setCancellations] = useState([]);
+  const [openings, setOpenings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [cancellationMessage, setCancellationMessage] = useState("");
   let history = useHistory();
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `${url}/cancellations`,
+      url: `${url}/openings`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
       if (userData.IS_ADMIN === 1) {
-        setCancellations(res.data.cancellations);
+        setOpenings(res.data.openings);
       } else {
-        const data = res.data.cancellations.filter(
+        const data = res.data.openings.filter(
           (e) => e.EMAIL === userData.EMAIL
         );
-        setCancellations(data);
+        setOpenings(data);
       }
+      setIsLoading(false);
     });
-    axios({
-      method: "GET",
-      url: `${url}/cancellations/message`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        setCancellationMessage(res.data.message);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        setCancellationMessage(
-          "No se ha registrado fecha para el limite de recepcion de solicitudes"
-        );
-        setIsLoading(false);
-      });
   }, [token, url, userData.IS_ADMIN, userData.EMAIL]);
 
   if (isLoading) {
@@ -139,22 +122,10 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       </div>
-      <Alert severity="info">{cancellationMessage}</Alert>
-      {userData.IS_ADMIN === 1 && (
-        <Box m={2} display="flex" justifyContent="center">
-          <Link
-            component={RouterLink}
-            underline="none"
-            to={`/cancellationMessage`}
-          >
-            <Button variant="contained" color="primary">
-              Cambiar mensaje de cancelacion
-            </Button>
-          </Link>
-        </Box>
-      )}
-      {cancellations.length === 0 ? (
-        <Alert severity="info">No hay cancelaciones para mostrar</Alert>
+      {openings.length === 0 ? (
+        <Alert severity="info">
+          No hay solicitudes de apertura para mostrar
+        </Alert>
       ) : (
         <>
           <TableContainer component={Paper}>
@@ -172,7 +143,7 @@ const Home = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cancellations.map((e, i) => {
+                {openings.map((e, i) => {
                   return (
                     <TableRow key={i}>
                       <TableCell component="th" scope="row">
@@ -185,9 +156,7 @@ const Home = () => {
                       {e.STATE === "C" && <TableCell>Creada</TableCell>}
                       {e.STATE === "D" && <TableCell>Denegada</TableCell>}
                       <TableCell>
-                        <Link
-                          href={`${url}/static/cancellations/${e.FILE_NAME}`}
-                        >
+                        <Link href={`${url}/static/openings/${e.FILE_NAME}`}>
                           {e.FILE_NAME}
                         </Link>
                       </TableCell>
@@ -199,7 +168,7 @@ const Home = () => {
                           <Link
                             component={RouterLink}
                             underline="none"
-                            to={`/cancellations/${e.ID}`}
+                            to={`/openings/${e.ID}`}
                           >
                             <Button variant="contained" color="primary">
                               Editar
@@ -218,10 +187,10 @@ const Home = () => {
               <Link
                 component={RouterLink}
                 underline="none"
-                to={`/createCancellation`}
+                to={`/createOpening`}
               >
                 <Button variant="contained" color="primary">
-                  Agregar cancelacion
+                  Agregar solicitud de apertura
                 </Button>
               </Link>
             </Box>

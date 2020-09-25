@@ -38,13 +38,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CancellationDetail = () => {
+const Home = () => {
   const classes = useStyles();
   const { userData, setIsLoged, url, token } = useData();
   let history = useHistory();
   let { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [cancellation, setCancellation] = useState({});
+  const [opening, setOpening] = useState({});
   const [state, setState] = useState("C");
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -54,18 +54,17 @@ const CancellationDetail = () => {
     } else {
       axios({
         method: "GET",
-        url: `${url}/cancellations/${id}`,
+        url: `${url}/openings/${id}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => {
-          setCancellation(res.data.cancellation[0]);
-          console.log(res.data.cancellation[0]);
-          setState(res.data.cancellation[0].STATE);
+          setOpening(res.data.opening[0]);
+          setState(res.data.opening[0].STATE);
           setIsLoading(false);
         })
-        .catch(() => {
+        .catch((e) => {
           history.push("/");
         });
     }
@@ -132,7 +131,7 @@ const CancellationDetail = () => {
               <Typography variant="h6">ID:</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="h6">{cancellation.ID}</Typography>
+              <Typography variant="h6">{opening.ID}</Typography>
             </Grid>
           </Grid>
         </Box>
@@ -148,7 +147,7 @@ const CancellationDetail = () => {
             </Grid>
             <Grid item xs={3}>
               <Typography variant="h6">
-                {moment(cancellation.TIMESTAMP).format("DD/MM/YY")}
+                {moment(opening.TIMESTAMP).format("DD/MM/YY")}
               </Typography>
             </Grid>
           </Grid>
@@ -164,7 +163,7 @@ const CancellationDetail = () => {
               <Typography variant="h6">Carrera:</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="h6">{cancellation.CAREER}</Typography>
+              <Typography variant="h6">{opening.CAREER}</Typography>
             </Grid>
           </Grid>
         </Box>
@@ -179,7 +178,7 @@ const CancellationDetail = () => {
               <Typography variant="h6">Email:</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="h6">{cancellation.EMAIL}</Typography>
+              <Typography variant="h6">{opening.EMAIL}</Typography>
             </Grid>
           </Grid>
         </Box>
@@ -194,7 +193,7 @@ const CancellationDetail = () => {
               <Typography variant="h6">Materia:</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="h6">{cancellation.NAME}</Typography>
+              <Typography variant="h6">{opening.NAME}</Typography>
             </Grid>
           </Grid>
         </Box>
@@ -209,9 +208,7 @@ const CancellationDetail = () => {
               <Typography variant="h6">Archivo:</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Link
-                href={`${url}/static/cancellations/${cancellation.FILE_NAME}`}
-              >
+              <Link href={`${url}/static/openings/${opening.FILE_NAME}`}>
                 <Button variant="contained" color="primary">
                   Ver archivo
                 </Button>
@@ -235,7 +232,7 @@ const CancellationDetail = () => {
                 id="demo-simple-select"
                 value={state}
                 onChange={(event) => {
-                  if (event.target.value !== cancellation.STATE) {
+                  if (event.target.value !== opening.STATE) {
                     setIsDisabled(false);
                   } else {
                     setIsDisabled(true);
@@ -258,13 +255,13 @@ const CancellationDetail = () => {
             onClick={() => {
               axios({
                 method: "PUT",
-                url: `${url}/cancellations/${id}`,
+                url: `${url}/openings/${id}`,
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
                 data: { state },
               }).then((res) => {
-                history.push("/cancellations");
+                history.push("/openings");
               });
             }}
           >
@@ -276,4 +273,4 @@ const CancellationDetail = () => {
   );
 };
 
-export default CancellationDetail;
+export default Home;
