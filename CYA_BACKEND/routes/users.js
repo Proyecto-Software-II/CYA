@@ -53,6 +53,22 @@ const usersApi = (app) => {
     }
   });
 
+  router.get('/allSubjects', verifyTokenMiddleware, async (req, res, next) => {
+    try {
+      jwt.verify(req.token, config.secretKey, async (err, authData) => {
+        if (err) next(err);
+        const subjects = await usersService.getAllSubjects();
+        res.status(200).json({
+          statusCode: 200,
+          message: 'Subjects listed',
+          subjects,
+        });
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   router.get('/info', verifyTokenMiddleware, async (req, res, next) => {
     try {
       jwt.verify(req.token, config.secretKey, async (err, authData) => {
