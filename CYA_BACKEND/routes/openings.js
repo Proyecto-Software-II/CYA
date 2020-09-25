@@ -4,7 +4,7 @@ const OpeningsService = require('../services/openings');
 const jwt = require('jsonwebtoken');
 const verifyTokenMiddleware = require('../utils/middleware/verifyTokenMiddleware');
 
-const { cancellationOrder, updateCancellation } = require('../utils/email');
+const { openingOrder, updateOpening } = require('../utils/email');
 
 const { config } = require('../config');
 
@@ -29,7 +29,7 @@ const OpeningApi = (app) => {
           FILE_NAME: fileName,
         };
         await openingsService.createOpeningOrder({ order });
-        //TODO: mandar email
+        openingOrder(user);
         res.status(201).json({
           statusCode: 201,
           message: 'Opening order created',
@@ -82,7 +82,19 @@ const OpeningApi = (app) => {
         if (err) next(err);
         await openingsService.updateOpening({ id, state });
         const opening = await openingsService.getOpening({ id });
-        //TODO: enviar correos
+        if (state === 'A') {
+          updateOpening(
+            opening[0].EMAIL,
+            opening[0].USERNAME,
+            'Tu solicitud ha sido aceptada'
+          );
+        } else if (state === 'D') {
+          updateOpening(
+            opening[0].EMAIL,
+            opening[0].USERNAME,
+            'Tu solicitud ha sido denegada'
+          );
+        }
         res.status(201).json({
           statusCode: 201,
           message: 'Opening updated',

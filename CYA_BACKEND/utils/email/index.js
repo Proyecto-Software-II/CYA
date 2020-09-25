@@ -36,6 +36,24 @@ const cancellationOrder = (user) => {
   });
 };
 
+const openingOrder = (user) => {
+  const email = new Email({
+    transport: transporter,
+    send: true,
+    preview: false,
+  });
+  email.send({
+    template: path.join(__dirname, 'templates', 'openingOrder'),
+    message: {
+      from: `CYA <${EMAIL_USER}>`,
+      to: `${user.EMAIL}`,
+    },
+    locals: {
+      name: user.USERNAME,
+    },
+  });
+};
+
 const updateCancellation = (userEmail, name, message) => {
   const email = new Email({
     transport: transporter,
@@ -55,4 +73,28 @@ const updateCancellation = (userEmail, name, message) => {
   });
 };
 
-module.exports = { cancellationOrder, updateCancellation };
+const updateOpening = (userEmail, name, message) => {
+  const email = new Email({
+    transport: transporter,
+    send: true,
+    preview: false,
+  });
+  email.send({
+    template: path.join(__dirname, 'templates', 'updateOpening'),
+    message: {
+      from: `CYA <${EMAIL_USER}>`,
+      to: `${userEmail}`,
+    },
+    locals: {
+      name: name,
+      message,
+    },
+  });
+};
+
+module.exports = {
+  cancellationOrder,
+  updateCancellation,
+  openingOrder,
+  updateOpening,
+};
