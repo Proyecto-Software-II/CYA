@@ -19,6 +19,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
 //Icons
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 //Context
@@ -60,6 +61,7 @@ const CancellationDetail = () => {
       })
         .then((res) => {
           setCancellation(res.data.cancellation[0]);
+          console.log(res.data.cancellation[0]);
           setState(res.data.cancellation[0].STATE);
           setIsLoading(false);
         })
@@ -131,6 +133,23 @@ const CancellationDetail = () => {
             </Grid>
             <Grid item xs={3}>
               <Typography variant="h6">{cancellation.ID}</Typography>
+            </Grid>
+          </Grid>
+        </Box>
+        <Box p={2}>
+          <Grid
+            container
+            direction="row"
+            justify="space-around"
+            alignItems="center"
+          >
+            <Grid item xs={3}>
+              <Typography variant="h6">Fecha:</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="h6">
+                {moment(cancellation.TIMESTAMP).format("DD/MM/YY")}
+              </Typography>
             </Grid>
           </Grid>
         </Box>

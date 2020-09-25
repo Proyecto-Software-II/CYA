@@ -23,6 +23,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
 //Icons
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 //Context
@@ -166,6 +167,7 @@ const Home = () => {
                   <TableCell>Materia</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Archivo</TableCell>
+                  <TableCell>Fecha</TableCell>
                   {userData.IS_ADMIN === 1 && <TableCell>Opciones</TableCell>}
                 </TableRow>
               </TableHead>
@@ -187,6 +189,9 @@ const Home = () => {
                           {e.FILE_NAME}
                         </Link>
                       </TableCell>
+                      <TableCell>
+                        {moment(e.TIMESTAMP).format("DD/MM/YY")}
+                      </TableCell>
                       {userData.IS_ADMIN === 1 && (
                         <TableCell>
                           <Link
@@ -207,7 +212,7 @@ const Home = () => {
             </Table>
           </TableContainer>
           {userData.IS_ADMIN === 0 && (
-            <Box mt={2} display="flex" justifyContent="center">
+            <Box m={2} display="flex" justifyContent="center">
               <Link
                 component={RouterLink}
                 underline="none"

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 var fs = require('fs').promises;
 const verifyTokenMiddleware = require('../utils/middleware/verifyTokenMiddleware');
 
-const { cancellationOrder } = require('../utils/email');
+const { cancellationOrder, updateCancellation } = require('../utils/email');
 
 const { config } = require('../config');
 
@@ -72,7 +72,7 @@ const cancellationsApi = (app) => {
           FILE_NAME: fileName,
         };
         await cancellationsService.createCancellationOrder({ order });
-        cancellationOrder();
+        cancellationOrder(user);
         res.status(201).json({
           statusCode: 201,
           message: 'Cancellation order created',
@@ -121,10 +121,23 @@ const cancellationsApi = (app) => {
     const { state } = req.body;
     try {
       jwt.verify(req.token, config.secretKey, async (err, authData) => {
+        const { user } = authData;
         if (err) next(err);
         await cancellationsService.updateCancellation({ id, state });
-        //TODO: informar del cambio por correo
         const cancellation = await cancellationsService.getCancellation({ id });
+        if (state === 'A') {
+          updateCancellation(
+            cancellation[0].EMAIL,
+            cancellation[0].USERNAME,
+            'Tu solicitud ha sido aceptada'
+          );
+        } else if (state === 'D') {
+          updateCancellation(
+            cancellation[0].EMAIL,
+            cancellation[0].USERNAME,
+            'Tu solicitud ha sido denegada'
+          );
+        }
         res.status(201).json({
           statusCode: 201,
           message: 'Cancellation updated',

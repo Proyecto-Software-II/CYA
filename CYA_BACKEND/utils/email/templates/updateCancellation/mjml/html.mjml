@@ -1,0 +1,23 @@
+<mjml>
+  <mj-body>
+    <mj-section background-color="#F0B503" padding="0">
+      <mj-column>
+        <mj-text>
+          <h1>
+            Se ha recibido tu solicitud de cancelacion en CYA
+          </h1>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#FFFFFF" padding="0">
+      <mj-column>
+        <mj-text>
+          Hola [user].
+        </mj-text>
+        <mj-text>
+          Se ha recibido tu solicitud de cancelacion de materia
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const cancellationOrder = (product) => {
+const cancellationOrder = (user) => {
   const email = new Email({
     transport: transporter,
     send: true,
@@ -28,9 +28,31 @@ const cancellationOrder = (product) => {
     template: path.join(__dirname, 'templates', 'cancellationOrder'),
     message: {
       from: `CYA <${EMAIL_USER}>`,
-      to: `${EMAIL_ADMIN}`,
+      to: `${user.EMAIL}`,
+    },
+    locals: {
+      name: user.USERNAME,
     },
   });
 };
 
-module.exports = { cancellationOrder };
+const updateCancellation = (userEmail, name, message) => {
+  const email = new Email({
+    transport: transporter,
+    send: true,
+    preview: false,
+  });
+  email.send({
+    template: path.join(__dirname, 'templates', 'updateCancellation'),
+    message: {
+      from: `CYA <${EMAIL_USER}>`,
+      to: `${userEmail}`,
+    },
+    locals: {
+      name: name,
+      message,
+    },
+  });
+};
+
+module.exports = { cancellationOrder, updateCancellation };
