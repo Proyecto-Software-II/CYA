@@ -17,6 +17,8 @@ import axios from "axios";
 import { useData } from "../../Context/DataContext";
 //Icons
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+//Images
+import Logo from "../../assets/images/logo_uptc.png";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -65,6 +67,9 @@ const Login = () => {
           alignItems="center"
           p={8}
         >
+          <Box>
+            <img src={Logo} alt="logo-uptc" height="150px" />
+          </Box>
           <Typography variant="h2">CYA</Typography>
           <Box mt={3}>
             <TextField
@@ -105,7 +110,7 @@ const Login = () => {
           <Box mt={3}>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.button}
               startIcon={<ArrowForwardIcon />}
               onClick={async () => {
