@@ -7,6 +7,7 @@ import Home from "./Pages/Home";
 import Cancellations from "./Pages/Cancellations";
 import CancellationDetail from "./Pages/CancellationDetail";
 import CreateCancellation from "./Pages/CreateCancellation";
+import CancellationMessage from "./Pages/CancellationMessage";
 //Context
 import { useData } from "./Context/DataContext";
 
@@ -26,6 +27,11 @@ const App = () => {
           <Route
             path="/createCancellation"
             component={CreateCancellation}
+            exact
+          />
+          <Route
+            path="/cancellationMessage"
+            component={CancellationMessage}
             exact
           />
         </Switch>

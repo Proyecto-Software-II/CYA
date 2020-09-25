@@ -139,6 +139,19 @@ const Home = () => {
         </AppBar>
       </div>
       <Alert severity="info">{cancellationMessage}</Alert>
+      {userData.IS_ADMIN === 1 && (
+        <Box m={2} display="flex" justifyContent="center">
+          <Link
+            component={RouterLink}
+            underline="none"
+            to={`/cancellationMessage`}
+          >
+            <Button variant="contained" color="primary">
+              Cambiar mensaje de cancelacion
+            </Button>
+          </Link>
+        </Box>
+      )}
       {cancellations.length === 0 ? (
         <Alert severity="info">No hay cancelaciones para mostrar</Alert>
       ) : (
