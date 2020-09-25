@@ -24,6 +24,8 @@ import moment from "moment";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 //Context
 import { useData } from "../../Context/DataContext";
+//Images
+import Banner from "../../assets/images/banner.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,6 +122,9 @@ const CancellationDetail = () => {
           </Toolbar>
         </AppBar>
       </div>
+      <Box display="flex" justifyContent="center">
+        <img src={Banner} alt="banner-uptc" />
+      </Box>
       <Box m={3} component={Paper}>
         <Box p={2}>
           <Grid

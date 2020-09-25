@@ -28,6 +28,8 @@ import moment from "moment";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 //Context
 import { useData } from "../../Context/DataContext";
+//Images
+import Banner from "../../assets/images/banner.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,6 +124,9 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       </div>
+      <Box display="flex" justifyContent="center">
+        <img src={Banner} alt="banner-uptc" />
+      </Box>
       {openings.length === 0 ? (
         <Alert severity="info">
           No hay solicitudes de apertura para mostrar

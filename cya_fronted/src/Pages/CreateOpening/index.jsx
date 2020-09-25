@@ -21,6 +21,8 @@ import axios from "axios";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 //Context
 import { useData } from "../../Context/DataContext";
+//Images
+import Banner from "../../assets/images/banner.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -116,8 +118,11 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       </div>
+      <Box display="flex" justifyContent="center">
+        <img src={Banner} alt="banner-uptc" />
+      </Box>
       <Box component={Paper} m={2}>
-        <Alert severity="info">1. Descarga el formato de apertura</Alert>
+        <Alert severity="info">1. Descarge el formato de apertura</Alert>
         <Box p={2} display="flex" justifyContent="center">
           <Link underline="none" href={`${url}/formats/FormatoApertura.docx`}>
             <Button variant="contained" color="primary">
@@ -126,8 +131,9 @@ const Home = () => {
           </Link>
         </Box>
         <Alert severity="info">
-          2. Seleccione la materia de la solicitud (debe conincidir con la
-          escrita en el documento)
+          2. Seleccione la materia a la cual desea solocitar la apertura (debe
+          conincidir con la escrita en el documento, si se escoje una materia
+          diferente, se denegara la solicitud)
         </Alert>
         <Box p={2} display="flex" justifyContent="center">
           {subjects.lengt === 0 ? (

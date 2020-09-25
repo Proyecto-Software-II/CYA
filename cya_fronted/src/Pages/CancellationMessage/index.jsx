@@ -20,6 +20,8 @@ import axios from "axios";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 //Context
 import { useData } from "../../Context/DataContext";
+//Images
+import Banner from "../../assets/images/banner.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,6 +122,9 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       </div>
+      <Box display="flex" justifyContent="center">
+        <img src={Banner} alt="banner-uptc" />
+      </Box>
       <Box m={2} component={Paper}>
         <Alert severity="info">{cancellationMessage}</Alert>
         <Box p={2} display="flex" justifyContent="center">
