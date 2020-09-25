@@ -49,6 +49,7 @@ const Home = () => {
   const { userData, setIsLoged, token, url } = useData();
   const [cancellations, setCancellations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [cancellationMessage, setCancellationMessage] = useState("");
   let history = useHistory();
 
   useEffect(() => {
@@ -67,9 +68,24 @@ const Home = () => {
         );
         setCancellations(data);
       }
-
-      setIsLoading(false);
     });
+    axios({
+      method: "GET",
+      url: `${url}/cancellations/message`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        setCancellationMessage(res.data.message);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setCancellationMessage(
+          "No se ha registrado fecha para el limite de recepcion de solicitudes"
+        );
+        setIsLoading(false);
+      });
   }, [token, url, userData.IS_ADMIN, userData.EMAIL]);
 
   if (isLoading) {
@@ -122,6 +138,7 @@ const Home = () => {
           </Toolbar>
         </AppBar>
       </div>
+      <Alert severity="info">{cancellationMessage}</Alert>
       {cancellations.length === 0 ? (
         <Alert severity="info">No hay cancelaciones para mostrar</Alert>
       ) : (
