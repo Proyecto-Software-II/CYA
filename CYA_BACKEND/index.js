@@ -9,6 +9,7 @@ const cancellationsApi = require('./routes/cancellations');
 app.use(cors());
 
 app.use('/static', express.static('files'));
+app.use('/formats', express.static('formats'));
 
 // body parser
 app.use(express.json());

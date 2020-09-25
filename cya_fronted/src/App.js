@@ -6,6 +6,7 @@ import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import Cancellations from "./Pages/Cancellations";
 import CancellationDetail from "./Pages/CancellationDetail";
+import CreateCancellation from "./Pages/CreateCancellation";
 //Context
 import { useData } from "./Context/DataContext";
 
@@ -20,6 +21,11 @@ const App = () => {
           <Route
             path="/cancellations/:id"
             component={CancellationDetail}
+            exact
+          />
+          <Route
+            path="/createCancellation"
+            component={CreateCancellation}
             exact
           />
         </Switch>

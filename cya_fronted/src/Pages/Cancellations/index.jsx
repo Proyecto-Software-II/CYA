@@ -195,9 +195,15 @@ const Home = () => {
           </TableContainer>
           {userData.IS_ADMIN === 0 && (
             <Box mt={2} display="flex" justifyContent="center">
-              <Button variant="contained" color="primary">
-                Agregar cancelacion
-              </Button>
+              <Link
+                component={RouterLink}
+                underline="none"
+                to={`/createCancellation`}
+              >
+                <Button variant="contained" color="primary">
+                  Agregar cancelacion
+                </Button>
+              </Link>
             </Box>
           )}
         </>
