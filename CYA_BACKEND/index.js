@@ -5,6 +5,7 @@ var cors = require('cors');
 const { config } = require('./config');
 const usersApi = require('./routes/users');
 const cancellationsApi = require('./routes/cancellations');
+const openingsApi = require('./routes/openings');
 
 app.use(cors());
 
@@ -29,6 +30,7 @@ app.use(
 //routes
 usersApi(app);
 cancellationsApi(app);
+openingsApi(app);
 
 // ping
 app.get('/ping', (req, res) => {

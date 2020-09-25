@@ -64,7 +64,7 @@ const cancellationsApi = (app) => {
         if (err) next(err);
         const fileName = moment().format('DD_MM_YY_hh_mm_ss') + '.pdf';
         let pdf = req.files.pdf;
-        pdf.mv('./files/' + fileName);
+        pdf.mv('./files/cancellations/' + fileName);
         const { user } = authData;
         const order = {
           ID_USER: user.ID,
