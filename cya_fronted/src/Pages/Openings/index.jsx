@@ -52,6 +52,7 @@ const Home = () => {
   const { userData, setIsLoged, token, url } = useData();
   const [openings, setOpenings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [openningMessage, setOpenningMessage] = useState("");
   let history = useHistory();
 
   useEffect(() => {
@@ -70,8 +71,24 @@ const Home = () => {
         );
         setOpenings(data);
       }
-      setIsLoading(false);
     });
+    axios({
+      method: "GET",
+      url: `${url}/openings/message`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        setOpenningMessage(res.data.message);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setOpenningMessage(
+          "No se ha registrado fecha para el limite de recepcion de solicitudes"
+        );
+        setIsLoading(false);
+      });
   }, [token, url, userData.IS_ADMIN, userData.EMAIL]);
 
   if (isLoading) {
@@ -127,6 +144,16 @@ const Home = () => {
       <Box display="flex" justifyContent="center">
         <img src={Banner} alt="banner-uptc" />
       </Box>
+      <Alert severity="info">{openningMessage}</Alert>
+      {userData.IS_ADMIN === 1 && (
+        <Box m={2} display="flex" justifyContent="center">
+          <Link component={RouterLink} underline="none" to={`/openningMessage`}>
+            <Button variant="contained" color="primary">
+              Cambiar mensaje de apertura
+            </Button>
+          </Link>
+        </Box>
+      )}
       {openings.length === 0 ? (
         <Alert severity="info">
           No hay solicitudes de apertura para mostrar

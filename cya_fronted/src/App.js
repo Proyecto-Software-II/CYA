@@ -11,6 +11,7 @@ import CancellationMessage from "./Pages/CancellationMessage";
 import Openings from "./Pages/Openings";
 import OpeningDetail from "./Pages/OpeningDetail";
 import CreateOpening from "./Pages/CreateOpening";
+import OpenningMessage from "./Pages/OpenningMessage";
 //Context
 import { useData } from "./Context/DataContext";
 
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/openings" component={Openings} exact />
           <Route path="/openings/:id" component={OpeningDetail} exact />
           <Route path="/createOpening" component={CreateOpening} exact />
+          <Route path="/openningMessage" component={OpenningMessage} exact />
         </Switch>
       </Router>
     );
